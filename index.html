@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>액자식 구성 웹아트</title>
+  <style>
+    body {
+      margin: 0;
+      background: #f7f7f7;
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .gallery {
+      display: flex;
+      gap: 30px;
+      background-color: rgba(255,255,255,0.85);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.25);
+    }
+    .frame {
+      position: relative;
+      border: 12px solid #704214;
+      background-color: #000;
+      box-shadow: 4px 4px 15px rgba(0,0,0,0.5);
+      cursor: pointer;
+    }
+    .frame img {
+      display: block;
+      height: auto;
+      max-height: 350px;
+    }
+    .caption, .label {
+      text-align: center;
+      font-size: 13px;
+      padding: 4px 6px;
+      background-color: rgba(255,255,255,0.85);
+    }
+    .caption {
+      font-style: italic;
+      color: #555;
+    }
+    .label {
+      font-weight: bold;
+      color: #222;
+    }
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 9999;
+    }
+    .popup video, .popup img {
+      max-height: 70vh;
+      border: 12px solid #704214;
+      box-shadow: 0 0 30px rgba(255,255,255,0.5);
+    }
+    .popup .caption, .popup .label {
+      background: none;
+      color: #eee;
+    }
+    .close-button {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 30px;
+      color: white;
+      background: rgba(0,0,0,0.5);
+      border: none;
+      cursor: pointer;
+      z-index: 10000;
+    }
+    video { display: none; }
+  </style>
+</head>
+<body>
+  <div class="gallery">
+    <div class="frame" data-id="mermaid">
+      <img src="mermaid_poster.jpg" alt="Mermaid Poster" style="width: 260px;">
+      <div class="label">그림을 가까이서 보려면 클릭하세요</div>
+      <div class="caption">『액자식 구성』, 2025</div>
+    </div>
+    <div class="frame" data-id="medusa">
+      <img src="medusa_poster.jpg" alt="Medusa Poster" style="width: 320px;">
+      <div class="label">그림을 가까이서 보려면 클릭하세요</div>
+      <div class="caption">『액자식 구성』, 2025</div>
+    </div>
+    <div class="frame" data-id="harpy">
+      <img src="harpy_poster.jpg" alt="Harpy Poster" style="width: 370px;">
+      <div class="label">그림을 가까이서 보려면 클릭하세요</div>
+      <div class="caption">『액자식 구성』, 2025</div>
+    </div>
+  </div>
+
+  <div id="popup" class="popup" style="display:none">
+    <button class="close-button" onclick="closePopup()">×</button>
+    <video id="popupVideo" controls></video>
+    <div class="caption">『액자식 구성』, 2025</div>
+  </div>
+
+  <script>
+    const popup = document.getElementById("popup");
+    const popupVideo = document.getElementById("popupVideo");
+
+    document.querySelectorAll(".frame").forEach(frame => {
+      frame.addEventListener("click", () => {
+        const id = frame.dataset.id;
+        const videoMap = {
+          mermaid: "mermaid.mp4",
+          medusa: "medusa.mp4",
+          harpy: "harpy.mp4"
+        };
+        popupVideo.src = videoMap[id];
+        popup.style.display = "flex";
+        popupVideo.style.display = "block";
+        popupVideo.play();
+      });
+    });
+
+    function closePopup() {
+      popupVideo.pause();
+      popupVideo.currentTime = 0;
+      popup.style.display = "none";
+      popupVideo.style.display = "none";
+    }
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape") closePopup();
+    });
+  </script>
+</body>
+</html>
